@@ -105,7 +105,7 @@ export interface AdminAnalytics {
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
-  private readonly base = 'http://localhost:8000';
+  private readonly base = `http://${window.location.hostname}:8000`;
   readonly adminBase = 'http://10.12.225.106:8001';
 
   constructor(private http: HttpClient) {}
