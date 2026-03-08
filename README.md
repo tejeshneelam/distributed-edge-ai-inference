@@ -206,3 +206,4 @@ All backend settings live in `edge-co-intelligence-system/backend/config.py` and
 ## License
 
 MIT
+# distributed-edge-ai-inference
