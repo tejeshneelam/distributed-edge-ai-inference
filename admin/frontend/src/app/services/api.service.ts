@@ -5,7 +5,7 @@ import { CameraInfo, CameraRegisterRequest, CameraControlRequest } from '../mode
 import { AnalyticsData } from '../models/analytics.model';
 import { DetectionEvent } from '../models/detection.model';
 
-const BASE_URL = '';
+const BASE_URL = 'http://10.12.225.106:8001';
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
