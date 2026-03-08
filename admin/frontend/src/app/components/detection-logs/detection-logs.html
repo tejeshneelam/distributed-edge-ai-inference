@@ -1,0 +1,32 @@
+<div class="detection-logs">
+  <div class="scroll-wrapper">
+    @if (dataSource.length === 0) {
+      <div class="empty">No detections yet — waiting for camera data…</div>
+    } @else {
+      <table>
+        <thead>
+          <tr>
+            <th>Timestamp</th>
+            <th>Camera ID</th>
+            <th>Vehicles</th>
+            <th>Vehicle Types</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of dataSource; track row.timestamp + row.camera_id) {
+            <tr>
+              <td class="col-time">{{ row.timestamp | date:'HH:mm:ss.SSS' }}</td>
+              <td class="col-cam">{{ row.camera_id }}</td>
+              <td class="col-count">{{ row.detected_vehicles }}</td>
+              <td class="col-types">
+                @for (t of getUniqueTypes(row.vehicle_types); track t.label) {
+                  <span class="type-chip">{{ t.label }}@if (t.count > 1) {&times;{{ t.count }}}</span>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
+  </div>
+</div>

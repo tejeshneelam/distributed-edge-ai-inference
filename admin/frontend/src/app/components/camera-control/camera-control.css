@@ -1,0 +1,88 @@
+.control-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 14px 16px;
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver-3);
+  margin-bottom: 4px;
+}
+
+.cam-select {
+  width: 100%;
+}
+
+/* Override Material form field to match mono aesthetic */
+::ng-deep .mat-mdc-form-field .mat-mdc-text-field-wrapper {
+  background: var(--panel-2) !important;
+}
+
+.no-cameras {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--silver-3);
+  text-align: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 16px 0;
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.ctrl-btn {
+  flex: 1;
+  min-width: 110px;
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.06em !important;
+  text-transform: uppercase !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.ctrl-btn mat-icon {
+  font-size: 16px !important;
+  width: 16px !important;
+  height: 16px !important;
+}
+
+.ctrl-btn.start-btn {
+  background: var(--green-dim) !important;
+  color: var(--green) !important;
+  border: 1px solid rgba(8,127,58,0.35) !important;
+  box-shadow: none !important;
+}
+
+.ctrl-btn.start-btn:hover:not(:disabled) {
+  background: rgba(8,127,58,0.14) !important;
+}
+
+.ctrl-btn.stop-btn {
+  background: var(--red-dim) !important;
+  color: var(--red) !important;
+  border: 1px solid rgba(192,57,43,0.35) !important;
+  box-shadow: none !important;
+}
+
+.ctrl-btn.stop-btn:hover:not(:disabled) {
+  background: rgba(192,57,43,0.14) !important;
+}
+
+.ctrl-btn:disabled {
+  opacity: 0.45 !important;
+  cursor: not-allowed !important;
+}

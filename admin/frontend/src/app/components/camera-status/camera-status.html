@@ -1,0 +1,32 @@
+<div class="camera-list">
+  @if (cameras.length === 0) {
+    <div class="empty">No cameras registered</div>
+  } @else {
+    <table>
+      <thead>
+        <tr>
+          <th>Camera ID</th>
+          <th>Hostname</th>
+          <th>IP Address</th>
+          <th>Last Seen</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (cam of cameras; track cam.camera_id) {
+          <tr>
+            <td class="col-id">{{ cam.camera_id }}</td>
+            <td class="col-host">{{ cam.hostname }}</td>
+            <td class="col-ip">{{ cam.ip_address }}</td>
+            <td class="col-time">{{ cam.last_seen | date:'HH:mm:ss' }}</td>
+            <td>
+              <span class="status-chip" [class.active]="cam.status === 'active'" [class.offline]="cam.status === 'offline'">
+                {{ cam.status }}
+              </span>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>

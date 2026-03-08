@@ -1,0 +1,37 @@
+<div class="control-wrap">
+
+  <div class="section-label">Select Camera Node</div>
+
+  <mat-form-field appearance="outline" class="cam-select">
+    <mat-label>Camera ID</mat-label>
+    <mat-select [(ngModel)]="selectedCameraId">
+      @for (cam of cameras; track cam.camera_id) {
+        <mat-option [value]="cam.camera_id">
+          {{ cam.camera_id }} — {{ cam.ip_address }}
+        </mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+
+  @if (cameras.length === 0) {
+    <div class="no-cameras">No cameras registered yet</div>
+  }
+
+  <div class="section-label">Send Command</div>
+
+  <div class="btn-row">
+    <button mat-flat-button class="ctrl-btn start-btn"
+            [disabled]="loading || !selectedCameraId"
+            (click)="send('start')">
+      <mat-icon>play_arrow</mat-icon>
+      Start Camera
+    </button>
+    <button mat-flat-button class="ctrl-btn stop-btn"
+            [disabled]="loading || !selectedCameraId"
+            (click)="send('stop')">
+      <mat-icon>stop</mat-icon>
+      Stop Camera
+    </button>
+  </div>
+
+</div>

@@ -1,0 +1,76 @@
+<div class="page">
+
+  <!-- ══ TOPBAR ══ -->
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="brand-mark"><mat-icon>admin_panel_settings</mat-icon></div>
+      <span class="brand-name">Edge Admin Portal</span>
+      <span class="brand-version">v1.0</span>
+    </div>
+    <div class="topbar-divider"></div>
+    <span class="topbar-sub">Distributed Vehicle Detection Coordinator</span>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-right">
+      <div class="sys-stat">
+        <div class="sys-stat-dot" [class.offline]="!sysOnline"></div>
+        <span>SYS</span>
+        <span class="sys-stat-val" [class.offline]="!sysOnline">{{ sysOnline ? 'ONLINE' : 'OFFLINE' }}</span>
+      </div>
+      <div class="topbar-clock">{{ clock }}</div>
+    </div>
+  </div>
+
+  <!-- ══ LAYOUT ══ -->
+  <div class="layout">
+
+    <!-- ROW 1: Analytics Panel (full width) -->
+    <div class="row row-full">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-head-accent acc-blue"></div>
+          <mat-icon class="panel-head-icon">insights</mat-icon>
+          <span class="panel-label">Analytics Overview</span>
+          <span class="panel-head-tag">5s POLL + LIVE WS</span>
+        </div>
+        <app-analytics-panel [analytics]="analytics" />
+      </div>
+    </div>
+
+    <!-- ROW 2: Camera Status (left) + Camera Control (right) -->
+    <div class="row">
+      <div class="panel panel-half">
+        <div class="panel-head">
+          <div class="panel-head-accent acc-teal"></div>
+          <mat-icon class="panel-head-icon">videocam</mat-icon>
+          <span class="panel-label">Camera Status</span>
+          <span class="panel-head-tag">{{ cameras.length }} CAM{{ cameras.length !== 1 ? 'S' : '' }}</span>
+        </div>
+        <app-camera-status [cameras]="cameras" />
+      </div>
+
+      <div class="panel panel-half">
+        <div class="panel-head">
+          <div class="panel-head-accent acc-amber"></div>
+          <mat-icon class="panel-head-icon">tune</mat-icon>
+          <span class="panel-label">Camera Control</span>
+          <span class="panel-head-tag">ADMIN</span>
+        </div>
+        <app-camera-control [cameras]="cameras" />
+      </div>
+    </div>
+
+    <!-- ROW 3: Detection Logs (full width) -->
+    <div class="row row-full">
+      <div class="panel">
+        <div class="panel-head">
+          <div class="panel-head-accent acc-green"></div>
+          <mat-icon class="panel-head-icon">list_alt</mat-icon>
+          <span class="panel-label">Detection Logs</span>
+          <span class="panel-head-tag">{{ logs.length }} EVENTS</span>
+        </div>
+        <app-detection-logs [logs]="logs" />
+      </div>
+    </div>
+
+  </div>
+</div>

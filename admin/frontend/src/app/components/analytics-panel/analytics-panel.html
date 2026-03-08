@@ -1,0 +1,39 @@
+<div class="analytics-wrap">
+
+  <!-- Stat cells: mirrors metrics-panel pattern -->
+  <div class="stats-grid">
+    <div class="stat-cell c-blue">
+      <div class="stat-label">Total Vehicles</div>
+      <div class="stat-value">{{ analytics?.total_vehicles ?? 0 }}</div>
+      <div class="stat-unit">detected</div>
+    </div>
+    @for (key of getCamKeys(); track key; let i = $index) {
+      <div class="stat-cell" [class.c-teal]="i === 0" [class.c-green]="i === 1" [class.c-amber]="i > 1">
+        <div class="stat-label">{{ key }}</div>
+        <div class="stat-value">{{ getCamValue(key) }}</div>
+        <div class="stat-unit">vehicles</div>
+      </div>
+    }
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-section">
+    <div class="charts-row">
+      <div class="chart-box">
+        <div class="chart-title">Vehicles per Camera</div>
+        <div class="chart-canvas-wrap"><canvas #barCanvas></canvas></div>
+      </div>
+      <div class="chart-box">
+        <div class="chart-title">Vehicle Type Distribution</div>
+        <div class="chart-canvas-wrap"><canvas #pieCanvas></canvas></div>
+      </div>
+    </div>
+    <div class="charts-row">
+      <div class="chart-box wide">
+        <div class="chart-title">Detection Timeline</div>
+        <div class="chart-canvas-wrap"><canvas #lineCanvas></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div>

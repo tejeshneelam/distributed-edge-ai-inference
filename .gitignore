@@ -25,8 +25,13 @@ edge-dashboard/dist/
 edge-dashboard/.angular/
 edge-dashboard/.angular/cache/
 edge-dashboard/coverage/
+admin/frontend/node_modules/
+admin/frontend/dist/
+admin/frontend/.angular/
+admin/frontend/coverage/
 npm-debug.log
 yarn-error.log
+package-lock.json
 
 # ── ML model weights ──
 *.pt

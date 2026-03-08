@@ -1,0 +1,80 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  /* Base — white/light */
+  --bg:         #eef2f7;
+  --bg-grid:    #dde3eb;
+  --panel:      #ffffff;
+  --panel-2:    #f6f8fb;
+  --panel-3:    #e9eef5;
+
+  /* Borders — cool steel */
+  --line:       #c9d2de;
+  --line-hi:    #a7b4c4;
+  --line-act:   #6d7d92;
+
+  /* Text — dark steels */
+  --silver-1:   #111827;
+  --silver-2:   #2f3d4f;
+  --silver-3:   #546479;
+  --silver-4:   #afbccb;
+
+  /* Accent — deep electric blue */
+  --blue:       #1a6fe8;
+  --blue-dim:   rgba(26,111,232,0.07);
+  --blue-line:  rgba(26,111,232,0.28);
+
+  /* Status */
+  --green:      #087f3a;
+  --green-dim:  rgba(8,127,58,0.08);
+  --amber:      #b45309;
+  --amber-dim:  rgba(180,83,9,0.08);
+  --red:        #c0392b;
+  --red-dim:    rgba(192,57,43,0.08);
+  --teal:       #0e7490;
+  --teal-dim:   rgba(14,116,144,0.08);
+
+  /* Typography */
+  --font-ui:    'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:  'IBM Plex Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  --t: 0.12s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--silver-1);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.005em;
+  text-rendering: optimizeLegibility;
+}
+
+a { color: var(--blue); text-decoration: none; }
+
+/* Light scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--panel-2); }
+::-webkit-scrollbar-thumb { background: var(--silver-4); }
+::-webkit-scrollbar-thumb:hover { background: var(--silver-3); }
+
+/* Subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0.2;
+}
+
+app-root { position: relative; z-index: 1; display: block; }

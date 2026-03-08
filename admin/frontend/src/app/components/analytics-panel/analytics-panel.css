@@ -1,0 +1,105 @@
+.analytics-wrap { display: flex; flex-direction: column; }
+
+/* ── Summary: stat cells identical to metrics-panel pattern ── */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 1px;
+  background: var(--line);
+}
+
+.stat-cell {
+  background: var(--panel);
+  padding: 20px 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  position: relative;
+  transition: background var(--t);
+  cursor: default;
+}
+
+.stat-cell:hover { background: var(--panel-3); }
+
+.stat-cell::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 1px;
+}
+
+.stat-cell.c-blue::before  { background: var(--blue); }
+.stat-cell.c-teal::before  { background: var(--teal); }
+.stat-cell.c-green::before { background: var(--green); }
+.stat-cell.c-amber::before { background: var(--amber); }
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--silver-2);
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 2.2rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-cell.c-blue  .stat-value { color: var(--blue); }
+.stat-cell.c-teal  .stat-value { color: var(--teal); }
+.stat-cell.c-green .stat-value { color: var(--green); }
+.stat-cell.c-amber .stat-value { color: var(--amber); }
+
+.stat-unit {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--silver-2);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* ── Charts ── */
+.charts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  background: var(--line);
+  margin-top: 1px;
+}
+
+.charts-row {
+  display: flex;
+  gap: 1px;
+  background: var(--line);
+}
+
+.chart-box {
+  background: var(--panel);
+  flex: 1;
+  min-width: 0;
+  padding: 14px 16px;
+}
+
+.chart-box.wide {
+  flex: 1;
+}
+
+.chart-title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--silver-3);
+  margin-bottom: 10px;
+}
+
+.chart-canvas-wrap {
+  height: 160px;
+  position: relative;
+}
