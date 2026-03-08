@@ -3,10 +3,10 @@
 .empty {
   padding: 32px 16px;
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  color: var(--silver-3);
+  font-size: 0.84rem;
+  color: var(--silver-2);
   text-align: center;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
@@ -28,11 +28,11 @@ thead tr {
 th {
   padding: 7px 12px;
   font-family: var(--font-mono);
-  font-size: 0.56rem;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--silver-3);
+  color: var(--silver-2);
   text-align: left;
   white-space: nowrap;
 }
@@ -40,7 +40,7 @@ th {
 td {
   padding: 8px 12px;
   border-bottom: 1px solid var(--line);
-  font-size: 0.78rem;
+  font-size: 0.9rem;
   color: var(--silver-2);
   vertical-align: middle;
   white-space: nowrap;
@@ -52,10 +52,10 @@ tbody tr:hover td { background: var(--panel-3); }
 
 .col-id {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 700;
   color: var(--blue);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.02em;
 }
 
 .col-file {
@@ -67,8 +67,8 @@ tbody tr:hover td { background: var(--panel-3); }
 
 .col-size {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  color: var(--silver-3);
+  font-size: 0.76rem;
+  color: var(--silver-2);
 }
 
 /* Status chips */
@@ -77,9 +77,9 @@ tbody tr:hover td { background: var(--panel-3); }
   align-items: center;
   gap: 5px;
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 2px 8px;
   border: 1px solid;
@@ -129,7 +129,7 @@ tbody tr:hover td { background: var(--panel-3); }
 
 .progress-text {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.74rem;
   font-weight: 600;
   color: var(--silver-2);
   min-width: 32px;
@@ -138,26 +138,26 @@ tbody tr:hover td { background: var(--panel-3); }
 
 .col-frames {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   color: var(--teal);
 }
 
 .col-det {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
   font-weight: 600;
   color: var(--green);
 }
 
 .col-time {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--silver-3);
+  font-size: 0.76rem;
+  color: var(--silver-2);
 }
 
 .col-dur {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--amber);
   text-align: right;

@@ -10,7 +10,7 @@
 .topbar {
   display: flex;
   align-items: center;
-  height: 48px;
+  height: 56px;
   padding: 0 20px;
   background: var(--panel);
   border-bottom: 2px solid var(--line);
@@ -48,18 +48,18 @@
 
 .brand-name {
   font-family: var(--font-mono);
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.9rem;
+  font-weight: 700;
   color: var(--silver-1);
-  letter-spacing: 0.12em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .brand-version {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   color: var(--silver-3);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   margin-left: 2px;
 }
 
@@ -73,9 +73,9 @@
 
 .topbar-sub {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
+  font-size: 0.72rem;
   color: var(--silver-3);
-  letter-spacing: 0.1em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
 }
 
@@ -92,9 +92,9 @@
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 0.65rem;
+  font-size: 0.72rem;
   color: var(--silver-3);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   text-transform: uppercase;
 }
 
@@ -127,10 +127,10 @@
 
 .topbar-clock {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 600;
   color: var(--silver-2);
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   border-left: 1px solid var(--line-hi);
   padding-left: 16px;
 }
@@ -163,7 +163,7 @@
 .panel-head {
   display: flex;
   align-items: center;
-  height: 36px;
+  height: 42px;
   padding: 0 16px;
   background: var(--panel-2);
   border-bottom: 1px solid var(--line);
@@ -186,18 +186,18 @@
 
 .panel-label {
   font-family: var(--font-mono);
-  font-size: 0.63rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--silver-2);
+  color: var(--silver-1);
 }
 
 .panel-head-tag {
   margin-left: auto;
   font-family: var(--font-mono);
-  font-size: 0.58rem;
-  letter-spacing: 0.08em;
+  font-size: 0.68rem;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 1px 6px;
   border: 1px solid var(--line-hi);

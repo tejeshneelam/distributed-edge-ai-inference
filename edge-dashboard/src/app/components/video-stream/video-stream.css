@@ -24,11 +24,11 @@
 
 .stream-label {
   font-family: var(--font-mono);
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
-  color: var(--silver-2);
+  color: var(--silver-1);
 }
 
 .badge {
@@ -36,9 +36,9 @@
   align-items: center;
   gap: 5px;
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.66rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
   padding: 2px 7px;
   border: 1px solid;
@@ -98,17 +98,17 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
   gap: 8px;
   background: rgba(240,242,245,0.92);
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
-  color: var(--silver-3);
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  color: var(--silver-2);
 }
 
 .overlay-error { color: var(--red); }
 
 .hint {
-  font-size: 0.65rem;
+  font-size: 0.8rem;
   color: var(--silver-3);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
 }
 
 .icon-x {
@@ -135,11 +135,11 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
 
 .upload-heading {
   font-family: var(--font-mono);
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--silver-3);
+  color: var(--silver-1);
 }
 
 .drop-zone {
@@ -169,16 +169,16 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
 }
 
 .drop-text {
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.98rem;
+  font-weight: 700;
   color: var(--silver-1);
 }
 
 .drop-sub {
   font-family: var(--font-mono);
-  font-size: 0.65rem;
-  color: var(--silver-3);
-  letter-spacing: 0.06em;
+  font-size: 0.76rem;
+  color: var(--silver-2);
+  letter-spacing: 0.03em;
 }
 
 .btn-browse {
@@ -188,9 +188,9 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
   background: transparent;
   color: var(--blue);
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.03em;
   cursor: pointer;
   transition: background var(--t);
 }
@@ -206,7 +206,7 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
 
 .progress-label {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   color: var(--silver-2);
   white-space: nowrap;
   overflow: hidden;
@@ -228,7 +228,7 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
 
 .progress-pct {
   font-family: var(--font-mono);
-  font-size: 0.72rem;
+  font-size: 0.82rem;
   font-weight: 700;
   color: var(--blue);
   text-align: right;
@@ -241,8 +241,8 @@ img { width: 100%; display: block; max-height: 360px; object-fit: contain; }
   gap: 10px;
   padding: 12px;
   font-family: var(--font-mono);
-  font-size: 0.75rem;
-  line-height: 1.6;
+  font-size: 0.86rem;
+  line-height: 1.7;
   letter-spacing: 0.02em;
 }
 

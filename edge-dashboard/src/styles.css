@@ -2,22 +2,22 @@
 
 :root {
   /* Base — white/light */
-  --bg:         #f0f2f5;
-  --bg-grid:    #e8eaed;
+  --bg:         #eef2f7;
+  --bg-grid:    #dde3eb;
   --panel:      #ffffff;
-  --panel-2:    #f5f6f8;
-  --panel-3:    #edf0f4;
+  --panel-2:    #f6f8fb;
+  --panel-3:    #e9eef5;
 
   /* Borders — cool steel */
-  --line:       #d4d9e2;
-  --line-hi:    #b8c0cc;
-  --line-act:   #8a97aa;
+  --line:       #c9d2de;
+  --line-hi:    #a7b4c4;
+  --line-act:   #6d7d92;
 
   /* Text — dark steels */
-  --silver-1:   #1a202c;
-  --silver-2:   #4a5568;
-  --silver-3:   #8896a8;
-  --silver-4:   #c4cdd8;
+  --silver-1:   #111827;
+  --silver-2:   #2f3d4f;
+  --silver-3:   #546479;
+  --silver-4:   #afbccb;
 
   /* Accent — deep electric blue */
   --blue:       #1a6fe8;
@@ -48,10 +48,11 @@ html, body {
   background: var(--bg);
   color: var(--silver-1);
   font-family: var(--font-ui);
-  font-size: 13px;
-  line-height: 1.5;
+  font-size: 15px;
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
+  text-rendering: optimizeLegibility;
 }
 
 a { color: var(--blue); text-decoration: none; }
@@ -72,8 +73,8 @@ body::before {
   background-image:
     linear-gradient(var(--line) 1px, transparent 1px),
     linear-gradient(90deg, var(--line) 1px, transparent 1px);
-  background-size: 40px 40px;
-  opacity: 0.45;
+  background-size: 48px 48px;
+  opacity: 0.2;
 }
 
 app-root { position: relative; z-index: 1; display: block; }
