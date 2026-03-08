@@ -1,0 +1,79 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+:root {
+  /* Base — white/light */
+  --bg:         #f0f2f5;
+  --bg-grid:    #e8eaed;
+  --panel:      #ffffff;
+  --panel-2:    #f5f6f8;
+  --panel-3:    #edf0f4;
+
+  /* Borders — cool steel */
+  --line:       #d4d9e2;
+  --line-hi:    #b8c0cc;
+  --line-act:   #8a97aa;
+
+  /* Text — dark steels */
+  --silver-1:   #1a202c;
+  --silver-2:   #4a5568;
+  --silver-3:   #8896a8;
+  --silver-4:   #c4cdd8;
+
+  /* Accent — deep electric blue */
+  --blue:       #1a6fe8;
+  --blue-dim:   rgba(26,111,232,0.07);
+  --blue-line:  rgba(26,111,232,0.28);
+
+  /* Status */
+  --green:      #087f3a;
+  --green-dim:  rgba(8,127,58,0.08);
+  --amber:      #b45309;
+  --amber-dim:  rgba(180,83,9,0.08);
+  --red:        #c0392b;
+  --red-dim:    rgba(192,57,43,0.08);
+  --teal:       #0e7490;
+  --teal-dim:   rgba(14,116,144,0.08);
+
+  /* Typography */
+  --font-ui:    'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+  --font-mono:  'IBM Plex Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+  --t: 0.12s ease;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--silver-1);
+  font-family: var(--font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: 0.01em;
+}
+
+a { color: var(--blue); text-decoration: none; }
+
+/* Light scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--panel-2); }
+::-webkit-scrollbar-thumb { background: var(--silver-4); }
+::-webkit-scrollbar-thumb:hover { background: var(--silver-3); }
+
+/* Subtle grid background */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.45;
+}
+
+app-root { position: relative; z-index: 1; display: block; }

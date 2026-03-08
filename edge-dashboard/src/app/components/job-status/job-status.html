@@ -1,0 +1,49 @@
+<section class="job-status">
+
+  <p *ngIf="jobs.length === 0" class="empty">No jobs submitted yet. Upload a video to start processing.</p>
+
+  <div class="scroll-wrapper">
+    <table *ngIf="jobs.length > 0">
+      <thead>
+        <tr>
+          <th>Job ID</th>
+          <th>File</th>
+          <th>Size</th>
+          <th>Status</th>
+          <th>Progress</th>
+          <th>Frames</th>
+          <th>Detections</th>
+          <th>Submitted</th>
+          <th>Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let j of jobs">
+          <td class="col-id">{{ j.job_id }}</td>
+          <td class="col-file" [title]="j.filename">{{ j.filename }}</td>
+          <td class="col-size">{{ fileSize(j.size_bytes) }}</td>
+          <td>
+            <span class="status-chip" [class]="statusClass(j.status)">{{ j.status }}</span>
+          </td>
+          <td class="col-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" [style.width.%]="j.progress_pct"
+                   [class]="statusClass(j.status)"></div>
+            </div>
+            <span class="progress-text">{{ j.progress_pct | number:'1.0-0' }}%</span>
+          </td>
+          <td class="col-frames">{{ j.processed_frames }}/{{ j.total_frames }}</td>
+          <td class="col-det">{{ j.detections_found }}</td>
+          <td class="col-time">{{ formatTime(j.submitted_at) }}</td>
+          <td class="col-dur">{{ duration(j) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="jobs.length > 0 && jobs[0].error" class="error-banner">
+    <span class="error-label">ERROR</span>
+    <span>{{ jobs[0].error }}</span>
+  </div>
+
+</section>

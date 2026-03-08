@@ -1,0 +1,50 @@
+# ── Python ──
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+*.egg
+dist/
+build/
+.eggs/
+.venv/
+venv/
+env/
+*.whl
+
+# ── Node / Angular ──
+edge-dashboard/node_modules/
+edge-dashboard/dist/
+edge-dashboard/.angular/
+npm-debug.log
+yarn-error.log
+
+# ── ML model weights ──
+*.pt
+*.onnx
+*.torchscript
+
+# ── IDE / Editor ──
+.idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+
+# ── OS ──
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# ── Data / uploads ──
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.webm
+*.flv
+
+# ── Misc ──
+.env
+*.log

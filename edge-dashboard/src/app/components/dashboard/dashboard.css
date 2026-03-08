@@ -1,0 +1,218 @@
+/* ── Page ── */
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* ── Topbar ── */
+.topbar {
+  display: flex;
+  align-items: center;
+  height: 48px;
+  padding: 0 20px;
+  background: var(--panel);
+  border-bottom: 2px solid var(--line);
+  box-shadow: 0 1px 0 var(--line-hi);
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  flex-shrink: 0;
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.brand-mark {
+  width: 26px;
+  height: 26px;
+  border: 1px solid var(--blue-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--blue-dim);
+  flex-shrink: 0;
+}
+
+.brand-mark mat-icon {
+  font-size: 14px !important;
+  width: 14px !important;
+  height: 14px !important;
+  color: var(--blue) !important;
+}
+
+.brand-name {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--silver-1);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.brand-version {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--silver-3);
+  letter-spacing: 0.06em;
+  margin-left: 2px;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--line-hi);
+  margin: 0 16px;
+  flex-shrink: 0;
+}
+
+.topbar-sub {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--silver-3);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.topbar-spacer { flex: 1; }
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.sys-stat {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--silver-3);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.sys-stat-dot {
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  flex-shrink: 0;
+  animation: blink 2.4s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+
+.sys-stat-val {
+  color: var(--green);
+  font-weight: 600;
+}
+
+.sys-stat-dot.offline {
+  background: var(--red);
+  animation: none;
+}
+
+.sys-stat-val.offline {
+  color: var(--red);
+}
+
+.topbar-clock {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--silver-2);
+  letter-spacing: 0.06em;
+  border-left: 1px solid var(--line-hi);
+  padding-left: 16px;
+}
+
+/* ── Layout ── */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  flex: 1;
+  background: var(--line);
+}
+
+/* Row: full-width or split */
+.row { display: flex; gap: 1px; background: var(--line); }
+.row-full { background: var(--panel); }
+
+/* ── Panel shell ── */
+.panel {
+  background: var(--panel);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.panel-half { flex: 1; }
+
+/* Panel header */
+.panel-head {
+  display: flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 16px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.panel-head-accent {
+  width: 2px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+.panel-head-icon {
+  font-size: 13px !important;
+  width: 13px !important;
+  height: 13px !important;
+  color: var(--silver-3) !important;
+}
+
+.panel-label {
+  font-family: var(--font-mono);
+  font-size: 0.63rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--silver-2);
+}
+
+.panel-head-tag {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 1px 6px;
+  border: 1px solid var(--line-hi);
+  color: var(--silver-3);
+}
+
+/* Accent colours per panel */
+.acc-blue  { background: var(--blue); }
+.acc-teal  { background: var(--teal); }
+.acc-green { background: var(--green); }
+.acc-amber { background: var(--amber); }
+.acc-red   { background: var(--red); }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .row { flex-direction: column; }
+  .topbar-right { display: none; }
+}

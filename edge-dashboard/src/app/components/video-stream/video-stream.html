@@ -1,0 +1,101 @@
+<section class="video-stream">
+
+  <!-- ── Live MJPEG viewer ── -->
+  <div class="stream-panel">
+    <div class="stream-header">
+      <span class="stream-label">Live Feed</span>
+      <span class="badge" [class]="streamStatus">{{ streamStatus }}</span>
+      <button *ngIf="streamStatus === 'error'" class="btn-retry" (click)="connect()">Retry</button>
+    </div>
+    <div class="frame-wrapper">
+      <img
+        [src]="streamUrl"
+        alt="Live annotated video stream"
+        (load)="onLoad()"
+        (error)="onError()"
+      />
+      <div *ngIf="streamStatus === 'connecting'" class="overlay">
+        <span class="spinner"></span>
+        <span>Waiting for live stream&hellip;</span>
+      </div>
+      <div *ngIf="streamStatus === 'error'" class="overlay overlay-error">
+        <span class="icon-x">&#10007;</span>
+        <span>Stream unavailable</span>
+        <span class="hint">Upload a video below to process frames</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Video upload ── -->
+  <div class="upload-panel">
+    <div class="upload-heading">Upload Video</div>
+
+    <!-- Idle: drop zone -->
+    <div
+      *ngIf="uploadStatus === 'idle'"
+      class="drop-zone"
+      [class.drag-over]="isDragOver"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave()"
+      (drop)="onDrop($event)"
+    >
+      <span class="drop-icon">&#9651;</span>
+      <span class="drop-text">Drag &amp; drop a video file</span>
+      <span class="drop-sub">mp4 &bull; avi &bull; mov &bull; mkv &bull; webm</span>
+      <label class="btn-browse">
+        Browse file
+        <input type="file" accept="video/*" (change)="onFileSelect($event)" hidden />
+      </label>
+    </div>
+
+    <!-- Uploading: progress bar -->
+    <div *ngIf="uploadStatus === 'uploading'" class="upload-progress">
+      <div class="progress-label">{{ uploadMessage }}</div>
+      <div class="progress-track">
+        <div class="progress-fill" [style.width.%]="uploadProgress"></div>
+      </div>
+      <div class="progress-pct">{{ uploadProgress }}%</div>
+    </div>
+
+    <!-- Done / Error -->
+    <div *ngIf="uploadStatus === 'done' || uploadStatus === 'error'"
+         class="upload-result"
+         [class.result-done]="uploadStatus === 'done' && (!activeJob || activeJob.status !== 'failed')"
+         [class.result-error]="uploadStatus === 'error' || activeJob?.status === 'failed'"
+         [class.result-processing]="activeJob?.status === 'processing'">
+
+      <!-- Status badge -->
+      <div class="job-status-row">
+        <span class="job-badge"
+              [class.badge-queued]="!activeJob || activeJob.status === 'queued'"
+              [class.badge-processing]="activeJob?.status === 'processing'"
+              [class.badge-completed]="activeJob?.status === 'completed'"
+              [class.badge-failed]="activeJob?.status === 'failed'">
+          {{ activeJob?.status ?? 'queued' | uppercase }}
+        </span>
+        <span class="job-id" *ngIf="activeJob">{{ activeJob.job_id }}</span>
+      </div>
+
+      <!-- Live message -->
+      <span class="upload-msg">{{ uploadMessage }}</span>
+
+      <!-- Progress bar (during processing) -->
+      <div *ngIf="activeJob?.status === 'processing'" class="job-progress">
+        <div class="job-progress-track">
+          <div class="job-progress-fill" [style.width.%]="jobProgress"></div>
+        </div>
+        <span class="job-progress-pct">{{ jobProgress | number:'1.0-0' }}%</span>
+      </div>
+
+      <!-- Stats line (when completed) -->
+      <div *ngIf="activeJob?.status === 'completed'" class="job-stats">
+        <span>{{ activeJob!.processed_frames }} frames</span>
+        <span class="sep">&bull;</span>
+        <span>{{ activeJob!.detections_found }} detections</span>
+      </div>
+
+      <button class="btn-reset" (click)="resetUpload()">Upload another</button>
+    </div>
+  </div>
+
+</section>

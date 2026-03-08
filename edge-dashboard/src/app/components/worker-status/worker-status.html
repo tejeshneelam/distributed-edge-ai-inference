@@ -1,0 +1,29 @@
+<section class="worker-status">
+
+  <p *ngIf="workers.length === 0" class="empty">No workers registered yet.</p>
+
+  <table *ngIf="workers.length > 0">
+    <thead>
+      <tr>
+        <th>Worker ID</th>
+        <th>Hostname</th>
+        <th>IP Address</th>
+        <th>Frames</th>
+        <th>Pending</th>
+        <th>Capabilities</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let w of workers">
+        <td class="col-id">{{ w.worker_id }}</td>
+        <td class="col-host">{{ w.hostname || w.host }}</td>
+        <td class="col-ip">{{ w.ip_address || w.host }}</td>
+        <td class="col-frames">{{ w.frames_processed }}</td>
+        <td class="col-pending" [class.col-pending-hot]="w.pending_frames > 0">{{ pendingDisplay(w) }}</td>
+        <td class="col-caps">{{ capabilitiesDisplay(w) }}</td>
+        <td><span class="status-chip" [class]="workerStatus(w)">{{ workerStatus(w) }}</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>

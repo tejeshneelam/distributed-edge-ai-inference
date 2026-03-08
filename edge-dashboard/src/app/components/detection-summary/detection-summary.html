@@ -1,0 +1,41 @@
+<section class="detection-summary">
+
+  <!-- Header stats -->
+  <div class="summary-header">
+    <div class="stat-pill">
+      <span class="stat-val">{{ totalDetections }}</span>
+      <span class="stat-lbl">Total Detections</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-val">{{ entries.length }}</span>
+      <span class="stat-lbl">Object Classes</span>
+    </div>
+    <div class="stat-pill">
+      <span class="stat-val">{{ totalFrames }}</span>
+      <span class="stat-lbl">Frames Analysed</span>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <p *ngIf="entries.length === 0" class="empty">
+    No detections yet. Upload a video to start inference.
+  </p>
+
+  <!-- Object class cards -->
+  <div *ngIf="entries.length > 0" class="class-grid">
+    <div *ngFor="let e of entries; let i = index" class="class-card">
+      <div class="card-top">
+        <span class="card-icon">{{ icon(e.label) }}</span>
+        <span class="card-label">{{ e.label }}</span>
+        <span class="card-count">{{ e.count }}</span>
+      </div>
+      <div class="card-bar-track">
+        <div class="card-bar-fill"
+             [style.width.%]="e.pct"
+             [style.background]="barColor(i)"></div>
+      </div>
+      <span class="card-pct">{{ e.pct }}%</span>
+    </div>
+  </div>
+
+</section>

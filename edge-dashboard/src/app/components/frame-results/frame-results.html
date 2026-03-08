@@ -1,0 +1,27 @@
+<section class="frame-results">
+
+  <p *ngIf="frames.length === 0" class="empty">No frames processed yet. Upload a video or register a worker to see results.</p>
+
+  <div class="scroll-wrapper">
+    <table *ngIf="frames.length > 0">
+      <thead>
+        <tr>
+          <th>Frame ID</th>
+          <th>Worker</th>
+          <th>Detected Objects</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let f of frames">
+          <td class="col-fid">#{{ f.frame_id }}</td>
+          <td class="col-worker">{{ f.worker_id }}</td>
+          <td class="col-objects">
+            <span *ngFor="let label of detectedLabels(f)" class="obj-chip">{{ label }}</span>
+          </td>
+          <td class="col-time">{{ processingTime(f) }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>

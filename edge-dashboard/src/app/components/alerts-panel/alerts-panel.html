@@ -1,0 +1,19 @@
+<section class="alerts-panel">
+
+  <div class="alerts-header">
+    <span class="alerts-title">ALERT FEED</span>
+    <span class="alerts-count" [class.has-alerts]="alerts.length > 0">{{ alerts.length }}</span>
+  </div>
+
+  <p *ngIf="alerts.length === 0" class="empty">No alerts recorded.</p>
+
+  <ul *ngIf="alerts.length > 0" class="alert-list">
+    <li *ngFor="let a of alerts" class="alert-row" [class]="severityClass(a)">
+      <span class="alert-time">{{ formatTime(a.timestamp) }}</span>
+      <span class="alert-sev">{{ (a.level ?? a.severity ?? 'INFO').toUpperCase() }}</span>
+      <span class="alert-worker">{{ a.worker_id }}</span>
+      <span class="alert-msg">{{ a.message ?? a.alert_labels.join(', ') }}</span>
+    </li>
+  </ul>
+
+</section>

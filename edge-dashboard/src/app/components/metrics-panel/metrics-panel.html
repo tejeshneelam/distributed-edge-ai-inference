@@ -1,0 +1,64 @@
+<section class="metrics-panel">
+
+  <p *ngIf="!metrics" class="empty">Awaiting metrics…</p>
+
+  <div *ngIf="metrics" class="stats-grid">
+    <div class="stat-cell c-blue">
+      <span class="stat-label">Frames</span>
+      <span class="stat-value">{{ metrics.total_frames_processed }}</span>
+      <span class="stat-unit">total processed</span>
+    </div>
+    <div class="stat-cell c-teal">
+      <span class="stat-label">Workers</span>
+      <span class="stat-value">{{ metrics.number_of_workers }}</span>
+      <span class="stat-unit">registered</span>
+    </div>
+    <div class="stat-cell c-green">
+      <span class="stat-label">Throughput</span>
+      <span class="stat-value">{{ metrics.processing_fps | number:'1.1-1' }}</span>
+      <span class="stat-unit">fps</span>
+    </div>
+    <div class="stat-cell c-amber">
+      <span class="stat-label">Uptime</span>
+      <span class="stat-value" style="font-size:1.4rem">{{ uptime }}</span>
+      <span class="stat-unit">&nbsp;</span>
+    </div>
+    <div class="stat-cell c-silver">
+      <span class="stat-label">Latency Avg</span>
+      <span class="stat-value">{{ metrics.latency_ms.avg_ms | number:'1.0-0' }}</span>
+      <span class="stat-unit">ms</span>
+    </div>
+    <div class="stat-cell c-silver">
+      <span class="stat-label">Latency P95</span>
+      <span class="stat-value">{{ metrics.latency_ms.p95_ms | number:'1.0-0' }}</span>
+      <span class="stat-unit">ms</span>
+    </div>
+    <div class="stat-cell c-red">
+      <span class="stat-label">Retries</span>
+      <span class="stat-value">{{ metrics.retry_count }}</span>
+      <span class="stat-unit">task retries</span>
+    </div>
+    <div class="stat-cell c-red">
+      <span class="stat-label">Dropped</span>
+      <span class="stat-value">{{ metrics.dropped_count }}</span>
+      <span class="stat-unit">frames</span>
+    </div>
+  </div>
+
+  <div *ngIf="metrics" class="queue-row">
+    <div class="queue-cell">
+      <span class="queue-label">Queue: Pending</span>
+      <span class="queue-value" [class.queue-hot]="metrics.queue['pending'] > 0">
+        {{ metrics.queue['pending'] }}
+      </span>
+    </div>
+    <div class="queue-sep"></div>
+    <div class="queue-cell">
+      <span class="queue-label">In-flight</span>
+      <span class="queue-value" [class.queue-hot]="metrics.queue['inflight'] > 0">
+        {{ metrics.queue['inflight'] }}
+      </span>
+    </div>
+  </div>
+
+</section>
