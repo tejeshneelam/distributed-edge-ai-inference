@@ -4,18 +4,27 @@ __pycache__/
 *.pyo
 *.egg-info/
 *.egg
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
 dist/
 build/
 .eggs/
 .venv/
 venv/
 env/
+.python-version
 *.whl
 
 # ── Node / Angular ──
 edge-dashboard/node_modules/
 edge-dashboard/dist/
 edge-dashboard/.angular/
+edge-dashboard/.angular/cache/
+edge-dashboard/coverage/
 npm-debug.log
 yarn-error.log
 
@@ -47,4 +56,6 @@ Thumbs.db
 
 # ── Misc ──
 .env
+.env.*
 *.log
+*.tmp
