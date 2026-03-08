@@ -5,7 +5,7 @@
     <div class="stat-cell c-blue">
       <div class="stat-label">Total Detections</div>
       <div class="stat-value">{{ analytics?.total_vehicles ?? 0 }}</div>
-      <div class="stat-unit">all cameras</div>
+      <div class="stat-unit">all cameras (objects)</div>
     </div>
     @for (key of getCamKeys(); track key; let i = $index) {
       <div class="stat-cell" [class.c-teal]="i === 0" [class.c-green]="i === 1" [class.c-amber]="i > 1">

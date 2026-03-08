@@ -25,12 +25,12 @@
     <div *ngIf="adminOnline" class="network-grid">
       <div class="net-total-cell">
         <span class="net-total-val">{{ networkTotal }}</span>
-        <span class="net-total-lbl">Total Vehicles (All Cameras)</span>
+        <span class="net-total-lbl">Total Detections (All Cameras)</span>
       </div>
       <div *ngFor="let cam of cameras" class="net-cam-cell">
         <span class="net-cam-id">{{ cam.id }}</span>
         <span class="net-cam-count">{{ cam.count }}</span>
-        <span class="net-cam-lbl">vehicles</span>
+        <span class="net-cam-lbl">detections</span>
       </div>
     </div>
     <p *ngIf="!adminOnline" class="net-offline">Admin not reachable — set ADMIN_URL and restart backend.</p>
