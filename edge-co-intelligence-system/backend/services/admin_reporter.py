@@ -67,22 +67,29 @@ class AdminReporter:
     # ── Heartbeat loop ────────────────────────────────────────────────────────
 
     def _run(self) -> None:
-        # Retry registration until admin is reachable
+        # Registration + heartbeat loop — re-registers whenever admin restarts
         while not self._stop.is_set():
-            if self._register():
-                self._registered = True
-                break
-            self._stop.wait(5)
+            # Ensure we are registered before heartbeating
+            while not self._stop.is_set():
+                if self._register():
+                    self._registered = True
+                    break
+                self._stop.wait(5)
 
-        # Heartbeat loop
-        while not self._stop.is_set():
-            try:
-                requests.post(
-                    f"{ADMIN_URL}/heartbeat/{CAMERA_ID}", timeout=3
-                )
-            except Exception:
-                pass
-            self._stop.wait(HEARTBEAT_INTERVAL)
+            # Heartbeat loop — exits back to registration if admin doesn't know us
+            while not self._stop.is_set():
+                try:
+                    r = requests.post(
+                        f"{ADMIN_URL}/heartbeat/{CAMERA_ID}", timeout=3
+                    )
+                    if r.status_code == 404:
+                        # Admin restarted and lost our registration — re-register
+                        print(f"[admin-reporter] heartbeat 404 — re-registering with admin")
+                        self._registered = False
+                        break  # break inner loop → outer loop re-registers
+                except Exception:
+                    pass
+                self._stop.wait(HEARTBEAT_INTERVAL)
 
     # ── Detection reporting ───────────────────────────────────────────────────
 
