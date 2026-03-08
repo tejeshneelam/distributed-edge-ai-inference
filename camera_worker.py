@@ -115,7 +115,7 @@ def analytics_loop(admin_url: str, camera_id: str, stop_event: threading.Event) 
         stop_event.wait(ANALYTICS_INTERVAL)
 
 
-def run(admin_url: str, camera_id: str, camera_name: str, source: str | int) -> None:
+def run(admin_url: str, camera_id: str, camera_name: str, source) -> None:
     # ── Try registering; retry until admin is reachable ───────────────────────
     while not register(admin_url, camera_id, camera_name):
         print("[INFO] Retrying registration in 5 seconds...")
