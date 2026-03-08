@@ -3,7 +3,6 @@ import logging
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 
-from .config import CORS_ORIGINS
 from .routes.camera_routes import router as camera_router
 from .routes.analytics_routes import router as analytics_router
 from .routes.control_routes import router as control_router
@@ -19,8 +18,8 @@ app = FastAPI(title="Edge Admin Portal", version="1.0.0")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"] if CORS_ORIGINS == "*" else [CORS_ORIGINS],
-    allow_credentials=True,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
