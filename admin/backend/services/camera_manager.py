@@ -37,11 +37,17 @@ class CameraManager:
             self._refresh_status()
             return list(self._cameras.values())
 
-    def update_last_seen(self, camera_id: str) -> None:
+    def update_last_seen(self, camera_id: str) -> bool:
         with self._lock:
             if camera_id in self._cameras:
                 self._cameras[camera_id].last_seen = datetime.now(timezone.utc).isoformat()
                 self._cameras[camera_id].status = "active"
+                return True
+            return False
+
+    def remove(self, camera_id: str) -> None:
+        with self._lock:
+            self._cameras.pop(camera_id, None)
 
     def _refresh_status(self) -> None:
         """Mark cameras offline if heartbeat timeout exceeded (called while lock held)."""

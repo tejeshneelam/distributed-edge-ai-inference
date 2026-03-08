@@ -15,7 +15,7 @@ async def receive_detection(
     analytics_mgr: AnalyticsManager = Depends(get_analytics_manager),
     ws_mgr: WebSocketManager = Depends(get_websocket_manager),
 ) -> dict:
-    camera_mgr.update_last_seen(payload.camera_id)
+    camera_mgr.update_last_seen(payload.camera_id)  # auto-register keepalive
     analytics_mgr.record(payload)
     await ws_mgr.broadcast({"type": "detection", "data": payload.model_dump()})
     return {"status": "ok"}
