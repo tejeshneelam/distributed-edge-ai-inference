@@ -110,8 +110,8 @@ class AdminReporter:
         try:
             requests.post(f"{ADMIN_URL}/camera-detection", json=payload, timeout=4)
             print(
-                f"[admin-reporter] reported {vehicle_count} vehicles "
-                f"({len(vehicle_types)} detections) to admin"
+                f"[admin-reporter] reported {total_count} objects "
+                f"({len(object_types)} types) to admin"
             )
         except Exception as e:
             print(f"[admin-reporter] failed to report detection: {e}")
