@@ -31,7 +31,7 @@ admin/frontend/.angular/
 admin/frontend/coverage/
 npm-debug.log
 yarn-error.log
-package-lock.json
+edge-dashboard/package-lock.json
 
 # ── ML model weights ──
 *.pt
