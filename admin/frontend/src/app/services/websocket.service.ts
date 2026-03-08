@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
-const WS_URL = `ws://${window.location.hostname}:8001/ws/cameras`;
+const WS_PROTOCOL = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+const WS_URL = `${WS_PROTOCOL}//${window.location.host}/ws/cameras`;
 const RECONNECT_DELAY_MS = 3000;
 
 @Injectable({ providedIn: 'root' })

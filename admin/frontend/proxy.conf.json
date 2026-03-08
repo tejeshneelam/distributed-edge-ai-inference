@@ -1,0 +1,43 @@
+{
+  "/health": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "info"
+  },
+  "/cameras": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/register-camera": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/heartbeat": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/analytics": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/camera-detection": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/camera-control": {
+    "target": "http://localhost:8001",
+    "secure": false,
+    "changeOrigin": true
+  },
+  "/ws": {
+    "target": "ws://localhost:8001",
+    "secure": false,
+    "ws": true
+  }
+}
