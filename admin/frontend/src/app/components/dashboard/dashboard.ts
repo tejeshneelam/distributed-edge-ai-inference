@@ -14,6 +14,7 @@ import { DetectionEvent } from '../../models/detection.model';
 import { CameraStatusComponent } from '../camera-status/camera-status';
 import { AnalyticsPanelComponent } from '../analytics-panel/analytics-panel';
 import { DetectionLogsComponent } from '../detection-logs/detection-logs';
+import { CameraControlComponent } from '../camera-control/camera-control';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +25,7 @@ import { DetectionLogsComponent } from '../detection-logs/detection-logs';
     CameraStatusComponent,
     AnalyticsPanelComponent,
     DetectionLogsComponent,
+    CameraControlComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
