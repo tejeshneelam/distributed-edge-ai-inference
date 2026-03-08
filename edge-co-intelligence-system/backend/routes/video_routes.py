@@ -194,11 +194,13 @@ def _process_video_file(path: str, job_id: str, filename: str) -> None:
     try:
         _run_yolo_inference(path, job_id)
         job_tracker.mark_completed(job_id)
+        _report_to_admin(job_id)
     except Exception as exc:
         print(f"[video] YOLOv8 inference failed ({exc}), falling back to cv2-only mode")
         try:
             _process_with_cv2_only(path, job_id)
             job_tracker.mark_completed(job_id)
+            _report_to_admin(job_id)
         except Exception as exc2:
             print(f"[video] cv2 also failed ({exc2})")
             job_tracker.mark_failed(job_id, str(exc2))
@@ -207,6 +209,25 @@ def _process_video_file(path: str, job_id: str, filename: str) -> None:
             os.unlink(path)
         except OSError:
             pass
+
+
+def _report_to_admin(job_id: str) -> None:
+    """Push vehicle detection totals from this job to the Admin Portal (if configured)."""
+    from backend.config import ADMIN_URL
+    if not ADMIN_URL:
+        return
+    try:
+        from backend.services.admin_reporter import get_reporter
+        from backend.services import result_aggregator
+        summary = result_aggregator.get_summary()
+        counts: dict = summary.get("object_counts", {})
+        # Collect only vehicle-class labels
+        vehicle_labels = {"car", "truck", "bus", "motorcycle", "bicycle"}
+        vehicle_count = sum(v for k, v in counts.items() if k in vehicle_labels)
+        vehicle_types = [k for k, v in counts.items() if k in vehicle_labels for _ in range(v)]
+        get_reporter().report_job_summary(vehicle_count, vehicle_types)
+    except Exception as e:
+        print(f"[video] admin report error: {e}")
 
 
 def _run_yolo_inference(path: str, job_id: str) -> None:

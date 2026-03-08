@@ -31,3 +31,12 @@ MAX_FRAME_BUFFER: int = int(os.getenv("MAX_FRAME_BUFFER", "30"))
 # ── Stream ───────────────────────────────────────────────────────────────────
 STREAM_TIMEOUT: float = float(os.getenv("STREAM_TIMEOUT", "5.0"))
 STREAM_BOUNDARY: str = "frame"
+
+# ── Admin Portal integration ──────────────────────────────────────────────────
+# Set ADMIN_URL to the Admin laptop's address so this camera reports to it.
+# Leave blank to disable reporting (standalone mode).
+# Example: ADMIN_URL=http://192.168.1.10:8001
+ADMIN_URL: str = os.getenv("ADMIN_URL", "")
+# Unique ID for this camera node shown in the Admin dashboard.
+CAMERA_ID: str = os.getenv("CAMERA_ID", "cam1")
+CAMERA_NAME: str = os.getenv("CAMERA_NAME", CAMERA_ID)

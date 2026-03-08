@@ -96,9 +96,17 @@ export interface JobStatus {
   progress_pct: number;
 }
 
+export interface AdminAnalytics {
+  total_vehicles: number;
+  per_camera: Record<string, number>;
+  type_distribution: Record<string, number>;
+  timeline: { timestamp: string; camera_id: string; detected_vehicles: number }[];
+}
+
 @Injectable({ providedIn: 'root' })
 export class ApiService {
   private readonly base = 'http://localhost:8000';
+  readonly adminBase = 'http://localhost:8001';
 
   constructor(private http: HttpClient) {}
 
@@ -149,5 +157,9 @@ export class ApiService {
       reportProgress: true,
     });
     return this.http.request(req);
+  }
+
+  getNetworkAnalytics(): Observable<AdminAnalytics> {
+    return this.http.get<AdminAnalytics>(`${this.adminBase}/analytics`);
   }
 }

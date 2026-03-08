@@ -64,6 +64,14 @@ async def startup() -> None:
     threading.Thread(target=_eviction_loop, daemon=True, name="worker-eviction").start()
     print("[coordinator] eviction watchdog started")
 
+    # Start Admin reporter if ADMIN_URL is configured
+    from backend.config import ADMIN_URL
+    if ADMIN_URL:
+        from backend.services.admin_reporter import AdminReporter
+        reporter = AdminReporter()
+        reporter.start()
+        print(f"[coordinator] admin reporter started → {ADMIN_URL}")
+
     # Register the coordinator itself as a worker so it participates in load balancing.
     # Frames are dispatched to http://127.0.0.1:8000/process-frame when coordinator-local
     # is the least-loaded node — eliminating the need for a separate local YOLO fallback.
