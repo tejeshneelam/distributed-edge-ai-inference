@@ -20,7 +20,7 @@ app = FastAPI(title="Edge Admin Portal", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"] if CORS_ORIGINS == "*" else [CORS_ORIGINS],
-    allow_credentials=True,
+    allow_credentials=False,   # must be False when allow_origins is "*"
     allow_methods=["*"],
     allow_headers=["*"],
 )

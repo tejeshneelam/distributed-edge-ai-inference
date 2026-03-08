@@ -1,7 +1,8 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Subject } from 'rxjs';
 
-const WS_URL = 'ws://localhost:8001/ws/cameras';
+// Derive WS URL from the page's host so it works from any machine's browser
+const WS_URL = `ws://${window.location.hostname}:8001/ws/cameras`;
 const RECONNECT_DELAY_MS = 3000;
 
 @Injectable({ providedIn: 'root' })
