@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DetectionEvent } from '../../models/detection.model';
 
 const MAX_LOGS = 200;
+const VEHICLE_LABELS = new Set(['car', 'truck', 'bus', 'motorcycle', 'bicycle']);
 
 @Component({
   selector: 'app-detection-logs',
@@ -20,6 +21,15 @@ export class DetectionLogsComponent implements OnChanges {
     if (changes['logs']) {
       this.dataSource = [...this.logs].slice(0, MAX_LOGS);
     }
+  }
+
+  objectKeys(obj: Record<string, number> | undefined): string[] {
+    if (!obj) return [];
+    return Object.keys(obj).filter(k => (obj[k] ?? 0) > 0);
+  }
+
+  isVehicle(label: string): boolean {
+    return VEHICLE_LABELS.has(label);
   }
 
   getUniqueTypes(types: string[]): { label: string; count: number }[] {

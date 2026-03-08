@@ -191,16 +191,19 @@ async def upload_video(file: UploadFile = File(...)):
 # ── Processing pipeline ───────────────────────────────────────────────────────
 
 def _process_video_file(path: str, job_id: str, filename: str) -> None:
+    # Snapshot cumulative counts BEFORE this job so we can compute the delta
+    from backend.services import result_aggregator as _ra
+    counts_before: dict = dict(_ra.get_summary().get("object_counts", {}))
     try:
         _run_yolo_inference(path, job_id)
         job_tracker.mark_completed(job_id)
-        _report_to_admin(job_id)
+        _report_to_admin(counts_before)
     except Exception as exc:
         print(f"[video] YOLOv8 inference failed ({exc}), falling back to cv2-only mode")
         try:
             _process_with_cv2_only(path, job_id)
             job_tracker.mark_completed(job_id)
-            _report_to_admin(job_id)
+            _report_to_admin(counts_before)
         except Exception as exc2:
             print(f"[video] cv2 also failed ({exc2})")
             job_tracker.mark_failed(job_id, str(exc2))
@@ -211,21 +214,24 @@ def _process_video_file(path: str, job_id: str, filename: str) -> None:
             pass
 
 
-def _report_to_admin(job_id: str) -> None:
-    """Push vehicle detection totals from this job to the Admin Portal (if configured)."""
+def _report_to_admin(counts_before: dict) -> None:
+    """Push the per-job detection delta (all object types) to the Admin Portal."""
     from backend.config import ADMIN_URL
     if not ADMIN_URL:
         return
     try:
         from backend.services.admin_reporter import get_reporter
         from backend.services import result_aggregator
-        summary = result_aggregator.get_summary()
-        counts: dict = summary.get("object_counts", {})
-        # Collect only vehicle-class labels
-        vehicle_labels = {"car", "truck", "bus", "motorcycle", "bicycle"}
-        vehicle_count = sum(v for k, v in counts.items() if k in vehicle_labels)
-        vehicle_types = [k for k, v in counts.items() if k in vehicle_labels for _ in range(v)]
-        get_reporter().report_job_summary(vehicle_count, vehicle_types)
+        counts_after: dict = result_aggregator.get_summary().get("object_counts", {})
+        # Delta = only what was detected in THIS job
+        counts_delta = {
+            k: counts_after.get(k, 0) - counts_before.get(k, 0)
+            for k in counts_after
+            if counts_after.get(k, 0) > counts_before.get(k, 0)
+        }
+        total_count = sum(counts_delta.values())
+        object_types = [k for k, v in counts_delta.items() for _ in range(v)]
+        get_reporter().report_job_summary(total_count, object_types, counts_delta)
     except Exception as e:
         print(f"[video] admin report error: {e}")
 

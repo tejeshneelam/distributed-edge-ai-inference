@@ -36,9 +36,9 @@
       </div>
     </div>
 
-    <!-- ROW 2: Camera Status (left) + Camera Control (right) -->
-    <div class="row">
-      <div class="panel panel-half">
+    <!-- ROW 2: Camera Status (full width) -->
+    <div class="row row-full">
+      <div class="panel">
         <div class="panel-head">
           <div class="panel-head-accent acc-teal"></div>
           <mat-icon class="panel-head-icon">videocam</mat-icon>
@@ -46,16 +46,6 @@
           <span class="panel-head-tag">{{ cameras.length }} CAM{{ cameras.length !== 1 ? 'S' : '' }}</span>
         </div>
         <app-camera-status [cameras]="cameras" />
-      </div>
-
-      <div class="panel panel-half">
-        <div class="panel-head">
-          <div class="panel-head-accent acc-amber"></div>
-          <mat-icon class="panel-head-icon">tune</mat-icon>
-          <span class="panel-label">Camera Control</span>
-          <span class="panel-head-tag">ADMIN</span>
-        </div>
-        <app-camera-control [cameras]="cameras" />
       </div>
     </div>
 

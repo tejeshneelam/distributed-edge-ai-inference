@@ -17,15 +17,25 @@ class AnalyticsManager:
 
     def record(self, event: DetectionEvent) -> None:
         with self._lock:
-            self._total_vehicles += event.detected_vehicles
-            self._per_camera[event.camera_id] += event.detected_vehicles
-            for vtype in event.vehicle_types:
-                self._type_distribution[vtype] += 1
+            # Use object_counts if provided (richer data), else fall back to vehicle_types list
+            if event.object_counts:
+                counts = event.object_counts
+            else:
+                counts = {}
+                for t in event.vehicle_types:
+                    counts[t] = counts.get(t, 0) + 1
+
+            total = sum(counts.values())
+            self._total_vehicles += total
+            self._per_camera[event.camera_id] += total
+            for label, cnt in counts.items():
+                self._type_distribution[label] = self._type_distribution.get(label, 0) + cnt
             entry = {
                 "timestamp": event.timestamp,
                 "camera_id": event.camera_id,
-                "detected_vehicles": event.detected_vehicles,
-                "vehicle_types": event.vehicle_types,
+                "detected_vehicles": total,
+                "vehicle_types": list(counts.keys()),
+                "object_counts": dict(counts),
             }
             self._timeline.append(entry)
             if len(self._timeline) > MAX_TIMELINE:

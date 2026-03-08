@@ -22,6 +22,7 @@ class DetectionEvent(BaseModel):
     timestamp: str
     detected_vehicles: int
     vehicle_types: list[str]
+    object_counts: dict[str, int] = {}
 
 
 class CameraControlRequest(BaseModel):

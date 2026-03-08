@@ -14,7 +14,6 @@ import { DetectionEvent } from '../../models/detection.model';
 import { CameraStatusComponent } from '../camera-status/camera-status';
 import { AnalyticsPanelComponent } from '../analytics-panel/analytics-panel';
 import { DetectionLogsComponent } from '../detection-logs/detection-logs';
-import { CameraControlComponent } from '../camera-control/camera-control';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,7 +24,6 @@ import { CameraControlComponent } from '../camera-control/camera-control';
     CameraStatusComponent,
     AnalyticsPanelComponent,
     DetectionLogsComponent,
-    CameraControlComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -66,7 +64,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     // Initial fetches (no need to wait for first interval tick)
     this.api.getCameras().pipe(catchError(() => of([]))).subscribe((c: CameraInfo[]) => { this.cameras = c; });
-    this.api.getAnalytics().pipe(catchError(() => of(null))).subscribe(a => { if (a) this.analytics = a; });
+    this.api.getAnalytics().pipe(catchError(() => of(null))).subscribe(a => {
+      if (a) {
+        this.analytics = a;
+        // Pre-populate logs from stored timeline so data shows immediately on reload
+        if (a.timeline && a.timeline.length > 0) {
+          this.logs = [...a.timeline].reverse().map(e => ({
+            camera_id: e.camera_id,
+            timestamp: e.timestamp,
+            detected_vehicles: e.detected_vehicles,
+            vehicle_types: e.vehicle_types,
+            object_counts: (e as any).object_counts ?? {},
+          }));
+        }
+      }
+    });
     this.api.getHealth().pipe(catchError(() => of(null))).subscribe(h => { this.sysOnline = h !== null; });
 
     // Real-time WS events
@@ -88,23 +100,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const event = msg.data as DetectionEvent;
       // Prepend newest, cap at 200
       this.logs = [event, ...this.logs].slice(0, 200);
-      // Update analytics optimistically
-      if (this.analytics) {
-        this.analytics = {
-          ...this.analytics,
-          total_vehicles: this.analytics.total_vehicles + event.detected_vehicles,
-          per_camera: {
-            ...this.analytics.per_camera,
-            [event.camera_id]: (this.analytics.per_camera[event.camera_id] ?? 0) + event.detected_vehicles,
-          },
-          timeline: [...this.analytics.timeline, {
-            timestamp: event.timestamp,
-            camera_id: event.camera_id,
-            detected_vehicles: event.detected_vehicles,
-            vehicle_types: event.vehicle_types,
-          }].slice(-100),
-        };
-      }
+      // Refresh analytics from server to avoid double-counting from optimistic updates
+      this.api.getAnalytics().pipe(catchError(() => of(null))).subscribe(a => {
+        if (a) this.analytics = a;
+      });
     }
   }
 

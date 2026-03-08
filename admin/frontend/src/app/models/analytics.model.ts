@@ -10,4 +10,5 @@ export interface TimelineEntry {
   camera_id: string;
   detected_vehicles: number;
   vehicle_types: string[];
+  object_counts?: Record<string, number>;
 }

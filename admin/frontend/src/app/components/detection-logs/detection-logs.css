@@ -74,7 +74,7 @@ tbody tr:hover td { background: var(--panel-3); }
   text-align: right;
 }
 
-.col-types { white-space: normal; max-width: 360px; }
+.col-types { white-space: normal; max-width: 400px; }
 
 .type-chip {
   display: inline-block;
@@ -88,4 +88,17 @@ tbody tr:hover td { background: var(--panel-3); }
   padding: 1px 6px;
   margin: 1px 2px 1px 0;
   text-transform: lowercase;
+  border-radius: 3px;
+}
+
+.type-chip.chip-vehicle {
+  color: var(--blue);
+  border-color: rgba(26,111,232,0.35);
+  background: rgba(26,111,232,0.08);
+}
+
+.type-chip.chip-person {
+  color: var(--amber);
+  border-color: rgba(180,83,9,0.35);
+  background: rgba(180,83,9,0.08);
 }

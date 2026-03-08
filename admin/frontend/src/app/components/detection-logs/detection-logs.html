@@ -7,20 +7,28 @@
         <thead>
           <tr>
             <th>Timestamp</th>
-            <th>Camera ID</th>
-            <th>Vehicles</th>
-            <th>Vehicle Types</th>
+            <th>Camera</th>
+            <th>Total</th>
+            <th>Detected Objects</th>
           </tr>
         </thead>
         <tbody>
           @for (row of dataSource; track row.timestamp + row.camera_id) {
             <tr>
-              <td class="col-time">{{ row.timestamp | date:'HH:mm:ss.SSS' }}</td>
+              <td class="col-time">{{ row.timestamp | date:'HH:mm:ss' }}</td>
               <td class="col-cam">{{ row.camera_id }}</td>
               <td class="col-count">{{ row.detected_vehicles }}</td>
               <td class="col-types">
-                @for (t of getUniqueTypes(row.vehicle_types); track t.label) {
-                  <span class="type-chip">{{ t.label }}@if (t.count > 1) {&times;{{ t.count }}}</span>
+                @if (row.object_counts && objectKeys(row.object_counts).length > 0) {
+                  @for (key of objectKeys(row.object_counts); track key) {
+                    <span class="type-chip" [class.chip-vehicle]="isVehicle(key)" [class.chip-person]="key === 'person'">
+                      {{ key }}&nbsp;<strong>{{ row.object_counts![key] }}</strong>
+                    </span>
+                  }
+                } @else {
+                  @for (t of getUniqueTypes(row.vehicle_types); track t.label) {
+                    <span class="type-chip">{{ t.label }}@if (t.count > 1) {&times;{{ t.count }}}</span>
+                  }
                 }
               </td>
             </tr>

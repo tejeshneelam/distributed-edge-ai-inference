@@ -50,7 +50,7 @@ export class AnalyticsPanelComponent implements OnChanges, AfterViewInit {
   private initCharts(): void {
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'bar',
-      data: { labels: [], datasets: [{ label: 'Vehicles per Camera', data: [], backgroundColor: '#1a6fe8' }] },
+      data: { labels: [], datasets: [{ label: 'Detections per Camera', data: [], backgroundColor: '#1a6fe8' }] },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } },
     });
 

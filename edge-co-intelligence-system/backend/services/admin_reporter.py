@@ -86,9 +86,9 @@ class AdminReporter:
 
     # ── Detection reporting ───────────────────────────────────────────────────
 
-    def report_job_summary(self, vehicle_count: int, vehicle_types: list) -> None:
+    def report_job_summary(self, total_count: int, object_types: list, object_counts: Optional[dict] = None) -> None:
         """
-        Push a detection event to Admin with the vehicle totals from a completed job.
+        Push a detection event to Admin with all detected object counts from this job.
         Called by video_routes after every successfully processed video.
         """
         if not ADMIN_URL:
@@ -96,8 +96,9 @@ class AdminReporter:
         payload = {
             "camera_id": CAMERA_ID,
             "timestamp": datetime.now(timezone.utc).isoformat(),
-            "detected_vehicles": vehicle_count,
-            "vehicle_types": vehicle_types,
+            "detected_vehicles": total_count,
+            "vehicle_types": object_types,
+            "object_counts": object_counts or {},
         }
         try:
             requests.post(f"{ADMIN_URL}/camera-detection", json=payload, timeout=4)
