@@ -70,7 +70,7 @@ async def startup() -> None:
         from backend.services.admin_reporter import AdminReporter
         reporter = AdminReporter()
         reporter.start()
-        print(f"[coordinator] admin reporter started → {ADMIN_URL}")
+        print(f"[coordinator] admin reporter started -> {ADMIN_URL}")
 
     # ── Load YOLO model eagerly so the first frame isn't slow ─────────────
     from backend.services import inference_service

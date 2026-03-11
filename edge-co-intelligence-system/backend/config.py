@@ -6,11 +6,13 @@ A .env file in the project root is loaded automatically if python-dotenv is inst
 """
 
 import os
+from pathlib import Path
 
 # Load .env file if present (pip install python-dotenv)
 try:
     from dotenv import load_dotenv  # type: ignore
-    load_dotenv()
+    env_path = Path(__file__).resolve().parent.parent / '.env'
+    load_dotenv(dotenv_path=env_path)
 except ImportError:
     pass  # python-dotenv not installed — rely on real env vars
 
