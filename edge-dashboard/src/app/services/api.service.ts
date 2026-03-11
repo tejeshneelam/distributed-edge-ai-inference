@@ -160,6 +160,6 @@ export class ApiService {
   }
 
   getNetworkAnalytics(): Observable<AdminAnalytics> {
-    return this.http.get<AdminAnalytics>(`${this.adminBase}/analytics`);
+    return this.http.get<AdminAnalytics>(`${this.base}/admin-analytics`);
   }
 }
