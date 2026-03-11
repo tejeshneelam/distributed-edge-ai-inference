@@ -1,0 +1,108 @@
+.alerts-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.alerts-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px 8px;
+  border-bottom: 1px solid var(--line);
+}
+
+.alerts-title {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--silver-3);
+}
+
+.alerts-count {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--silver-3);
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 1px 8px;
+  min-width: 20px;
+  text-align: center;
+}
+
+.alerts-count.has-alerts {
+  color: var(--amber);
+  border-color: rgba(180,83,9,0.35);
+}
+
+.empty {
+  padding: 20px 16px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--silver-3);
+  text-align: center;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.alert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  flex: 1;
+  max-height: 260px;
+}
+
+.alert-row {
+  display: grid;
+  grid-template-columns: 72px 64px 120px 1fr;
+  align-items: baseline;
+  gap: 10px;
+  padding: 7px 16px;
+  border-bottom: 1px solid var(--line);
+  transition: background var(--t);
+  cursor: default;
+}
+
+.alert-row:hover { background: var(--panel-2); }
+
+.alert-row.sev-red   { border-left: 2px solid var(--red); }
+.alert-row.sev-amber { border-left: 2px solid var(--amber); }
+.alert-row.sev-blue  { border-left: 2px solid var(--blue); }
+
+.alert-time {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--silver-3);
+}
+
+.alert-sev {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.sev-red   .alert-sev { color: var(--red); }
+.sev-amber .alert-sev { color: var(--amber); }
+.sev-blue  .alert-sev { color: var(--blue); }
+
+.alert-camera {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--teal);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.alert-msg {
+  font-family: var(--font-ui);
+  font-size: 0.75rem;
+  color: var(--silver-2);
+}

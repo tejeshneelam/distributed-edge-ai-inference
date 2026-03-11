@@ -10,11 +10,13 @@ import { WebsocketService } from '../../services/websocket.service';
 import { CameraInfo } from '../../models/camera.model';
 import { AnalyticsData } from '../../models/analytics.model';
 import { DetectionEvent } from '../../models/detection.model';
+import { CameraAlertEvent } from '../../models/alert.model';
 
 import { CameraStatusComponent } from '../camera-status/camera-status';
 import { AnalyticsPanelComponent } from '../analytics-panel/analytics-panel';
 import { DetectionLogsComponent } from '../detection-logs/detection-logs';
 import { CameraControlComponent } from '../camera-control/camera-control';
+import { AlertsPanelComponent } from '../alerts-panel/alerts-panel';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,6 +28,7 @@ import { CameraControlComponent } from '../camera-control/camera-control';
     AnalyticsPanelComponent,
     DetectionLogsComponent,
     CameraControlComponent,
+    AlertsPanelComponent,
   ],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
@@ -37,6 +40,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   cameras: CameraInfo[] = [];
   analytics: AnalyticsData | null = null;
   logs: DetectionEvent[] = [];
+  alerts: CameraAlertEvent[] = [];
 
   private subs: Subscription[] = [];
 
@@ -83,6 +87,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
     });
     this.api.getHealth().pipe(catchError(() => of(null))).subscribe(h => { this.sysOnline = h !== null; });
 
+    // Initial alerts fetch
+    this.api.getAlerts().pipe(catchError(() => of([]))).subscribe((a: CameraAlertEvent[]) => { this.alerts = a; });
+
     // Real-time WS events
     this.subs.push(
       this.ws.messages$.subscribe(msg => this.handleWsMessage(msg))
@@ -106,6 +113,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.api.getAnalytics().pipe(catchError(() => of(null))).subscribe(a => {
         if (a) this.analytics = a;
       });
+    } else if (msg.type === 'alert') {
+      const alert = msg.data as CameraAlertEvent;
+      this.alerts = [alert, ...this.alerts].slice(0, 200);
     }
   }
 

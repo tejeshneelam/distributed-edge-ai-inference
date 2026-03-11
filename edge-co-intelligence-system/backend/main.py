@@ -72,9 +72,12 @@ async def startup() -> None:
         reporter.start()
         print(f"[coordinator] admin reporter started → {ADMIN_URL}")
 
+    # ── Load YOLO model eagerly so the first frame isn't slow ─────────────
+    from backend.services import inference_service
+    inference_service.load_model()
+
     # Register the coordinator itself as a worker so it participates in load balancing.
-    # Frames are dispatched to http://127.0.0.1:8000/process-frame when coordinator-local
-    # is the least-loaded node — eliminating the need for a separate local YOLO fallback.
+    # Frames assigned to 'coordinator-local' are processed IN-PROCESS (no HTTP round-trip).
     from backend.services import worker_manager
     from backend.models import WorkerRegisterRequest
     worker_manager.register(WorkerRegisterRequest(
@@ -83,7 +86,7 @@ async def startup() -> None:
         port=8000,
         capabilities=["yolov8n"],
     ))
-    print("[coordinator] registered coordinator-local as worker (port 8000)")
+    print("[coordinator] registered coordinator-local as in-process worker")
 
 
 # ── Health ─────────────────────────────────────────────────────────────────────

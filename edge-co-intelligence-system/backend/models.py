@@ -179,3 +179,5 @@ class AlertEvent(BaseModel):
     timestamp: datetime
     detections: list[Detection]
     alert_labels: list[str]   # subset of labels that triggered the alert
+    level: str = "info"        # info | warning | critical
+    message: str = ""          # human-readable alert description

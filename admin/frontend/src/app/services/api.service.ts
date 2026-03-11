@@ -4,8 +4,9 @@ import { Observable } from 'rxjs';
 import { CameraInfo, CameraRegisterRequest, CameraControlRequest } from '../models/camera.model';
 import { AnalyticsData } from '../models/analytics.model';
 import { DetectionEvent } from '../models/detection.model';
+import { CameraAlertEvent } from '../models/alert.model';
 
-const BASE_URL = 'http://10.12.225.106:8001';
+const BASE_URL = `http://${window.location.hostname}:8001`;
 
 @Injectable({ providedIn: 'root' })
 export class ApiService {
@@ -36,5 +37,9 @@ export class ApiService {
       `${BASE_URL}/camera-control`,
       payload
     );
+  }
+
+  getAlerts(): Observable<CameraAlertEvent[]> {
+    return this.http.get<CameraAlertEvent[]>(`${BASE_URL}/camera-alerts`);
   }
 }

@@ -116,6 +116,27 @@ class AdminReporter:
         except Exception as e:
             print(f"[admin-reporter] failed to report detection: {e}")
 
+    def report_alert(self, alert: dict) -> None:
+        """
+        Push a smart alert to Admin Portal in real-time (fire-and-forget).
+        Called from InferenceService after each alert is generated locally.
+        """
+        if not ADMIN_URL:
+            return
+        payload = {
+            "camera_id": CAMERA_ID,
+            "worker_id": alert.get("worker_id", ""),
+            "frame_id": alert.get("frame_id", 0),
+            "timestamp": alert.get("timestamp", datetime.now(timezone.utc).isoformat()),
+            "alert_labels": alert.get("alert_labels", []),
+            "level": alert.get("level", "info"),
+            "message": alert.get("message", ""),
+        }
+        try:
+            requests.post(f"{ADMIN_URL}/camera-alerts", json=payload, timeout=4)
+        except Exception as e:
+            print(f"[admin-reporter] failed to push alert: {e}")
+
 
 # Module-level singleton (only created if ADMIN_URL is set)
 _reporter: Optional[AdminReporter] = None

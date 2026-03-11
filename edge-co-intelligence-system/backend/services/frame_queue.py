@@ -48,9 +48,10 @@ class FrameQueue:
         (up to MAX_RETRIES times), then discarded.
     """
 
-    def __init__(self, worker_manager, result_aggregator) -> None:
+    def __init__(self, worker_manager, result_aggregator, inference_service=None) -> None:
         self._wm = worker_manager
         self._ra = result_aggregator
+        self._inference = inference_service
         self._lock = threading.Lock()
         self._pending: deque[FrameTask] = deque()           # waiting for a free worker
         self._inflight: dict[str, FrameTask] = {}           # dispatched, awaiting result
@@ -92,10 +93,15 @@ class FrameQueue:
             return None
 
         task = task.model_copy(update={"assigned_worker": worker.worker_id})
-        target_url = f"http://{worker.ip_address or worker.host}:{worker.port}/process-frame"
         self._wm.increment_pending(worker.worker_id)
 
-        success = self._dispatch(task, target_url)
+        # ── Local fast-path: run inference in-process, skip HTTP ──────────
+        if worker.worker_id == "coordinator-local" and self._inference is not None:
+            success = self._dispatch_local(task)
+        else:
+            target_url = f"http://{worker.ip_address or worker.host}:{worker.port}/process-frame"
+            success = self._dispatch(task, target_url)
+
         if success:
             with self._lock:
                 self._inflight[task.task_id] = task
@@ -147,9 +153,24 @@ class FrameQueue:
 
     # ── Internal dispatch ─────────────────────────────────────────────────────
 
+    def _dispatch_local(self, task: FrameTask) -> bool:
+        """
+        In-process fast-path: decode base64, run YOLO directly, store result.
+        No HTTP round-trip, no JSON serialisation overhead.
+        """
+        try:
+            jpeg_bytes = base64.b64decode(task.jpeg_b64)
+            result = self._inference.run(jpeg_bytes, task.frame_id)
+            self._ra.store_frame_result(task.frame_id, result, "coordinator-local")
+            self.acknowledge(task.task_id)
+            return True
+        except Exception as exc:
+            print(f"[queue] local inference failed for frame {task.frame_id}: {exc}")
+            return False
+
     def _dispatch(self, task: FrameTask, url: str) -> bool:
         """
-        HTTP POST the frame task to the worker.
+        HTTP POST the frame task to a remote worker.
         Returns True on success, False on any network error.
         """
         try:
@@ -182,8 +203,8 @@ class FrameQueue:
                 while self._pending:
                     drained.append(self._pending.popleft())
 
-            # Build (dispatched_task, url) pairs first so we only hold the lock briefly
-            dispatch_batch: list[tuple[FrameTask, str]] = []
+            # Build (dispatched_task, url_or_None) pairs first so we only hold the lock briefly
+            dispatch_batch: list[tuple[FrameTask, str | None]] = []
             no_worker_tasks: list[FrameTask] = []
             for task in drained:
                 worker = self._wm.least_loaded(required_capability=task.required_capability)
@@ -194,9 +215,12 @@ class FrameQueue:
                     update={"assigned_worker": worker.worker_id,
                             "dispatched_at": datetime.now(timezone.utc)}
                 )
-                url = f"http://{worker.ip_address or worker.host}:{worker.port}/process-frame"
                 self._wm.increment_pending(worker.worker_id)
-                dispatch_batch.append((dispatched, url))
+                if worker.worker_id == "coordinator-local" and self._inference is not None:
+                    dispatch_batch.append((dispatched, None))  # None = local fast-path
+                else:
+                    url = f"http://{worker.ip_address or worker.host}:{worker.port}/process-frame"
+                    dispatch_batch.append((dispatched, url))
 
             # Re-buffer tasks that had no eligible worker
             with self._lock:
@@ -205,11 +229,15 @@ class FrameQueue:
 
             # Dispatch all ready tasks in parallel — avoids blocking on slow workers
             with concurrent.futures.ThreadPoolExecutor(max_workers=_DISPATCH_WORKERS) as ex:
-                future_to_task = {
-                    ex.submit(self._dispatch, t, url): t
-                    for t, url in dispatch_batch
-                }
-                for future, dispatched in future_to_task.items():
+                future_to_task = {}
+                for t, url in dispatch_batch:
+                    if url is None:
+                        # Local fast-path: in-process inference
+                        future_to_task[ex.submit(self._dispatch_local, t)] = t
+                    else:
+                        future_to_task[ex.submit(self._dispatch, t, url)] = t
+                for future in concurrent.futures.as_completed(future_to_task):
+                    dispatched = future_to_task[future]
                     if future.result():
                         with self._lock:
                             self._inflight[dispatched.task_id] = dispatched

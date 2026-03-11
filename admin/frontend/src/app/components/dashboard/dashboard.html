@@ -59,9 +59,19 @@
       </div>
     </div>
 
-    <!-- ROW 3: Detection Logs (full width) -->
-    <div class="row row-full">
-      <div class="panel">
+    <!-- ROW 3: Alerts (left) + Detection Logs (right) -->
+    <div class="row">
+      <div class="panel panel-half">
+        <div class="panel-head">
+          <div class="panel-head-accent acc-red"></div>
+          <mat-icon class="panel-head-icon">warning</mat-icon>
+          <span class="panel-label">Alerts</span>
+          <span class="panel-head-tag">{{ alerts.length }} ALERT{{ alerts.length !== 1 ? 'S' : '' }}</span>
+        </div>
+        <app-alerts-panel [alerts]="alerts" />
+      </div>
+
+      <div class="panel panel-half">
         <div class="panel-head">
           <div class="panel-head-accent acc-green"></div>
           <mat-icon class="panel-head-icon">list_alt</mat-icon>

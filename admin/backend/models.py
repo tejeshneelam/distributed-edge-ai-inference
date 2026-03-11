@@ -30,6 +30,16 @@ class CameraControlRequest(BaseModel):
     command: Literal["start", "stop"]
 
 
+class CameraAlertEvent(BaseModel):
+    camera_id: str
+    worker_id: str = ""
+    frame_id: int = 0
+    timestamp: str
+    alert_labels: list[str] = []
+    level: str = "info"         # info | warning | critical
+    message: str = ""
+
+
 class AnalyticsResponse(BaseModel):
     total_vehicles: int
     per_camera: dict[str, int]

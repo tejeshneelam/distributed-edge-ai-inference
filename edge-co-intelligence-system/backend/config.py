@@ -2,9 +2,17 @@
 config.py — Central configuration for the FastAPI coordinator backend.
 
 Values can be overridden via environment variables using the same names.
+A .env file in the project root is loaded automatically if python-dotenv is installed.
 """
 
 import os
+
+# Load .env file if present (pip install python-dotenv)
+try:
+    from dotenv import load_dotenv  # type: ignore
+    load_dotenv()
+except ImportError:
+    pass  # python-dotenv not installed — rely on real env vars
 
 # ── Server ──────────────────────────────────────────────────────────────────
 HOST: str = os.getenv("HOST", "0.0.0.0")
@@ -40,3 +48,8 @@ ADMIN_URL: str = os.getenv("ADMIN_URL", "")
 # Unique ID for this camera node shown in the Admin dashboard.
 CAMERA_ID: str = os.getenv("CAMERA_ID", "cam1")
 CAMERA_NAME: str = os.getenv("CAMERA_NAME", CAMERA_ID)
+
+# ── Alert thresholds ─────────────────────────────────────────────────────────
+ALERT_CONFIDENCE: float = float(os.getenv("ALERT_CONFIDENCE", "0.75"))
+ALERT_CONGESTION_THRESHOLD: int = int(os.getenv("ALERT_CONGESTION_THRESHOLD", "8"))
+ALERT_SLOW_INFERENCE_MS: float = float(os.getenv("ALERT_SLOW_INFERENCE_MS", "500"))

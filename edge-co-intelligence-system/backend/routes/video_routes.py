@@ -9,37 +9,18 @@ import time
 import uuid
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import Optional
 
 from fastapi import APIRouter, File, HTTPException, UploadFile
 from fastapi.responses import StreamingResponse
 
-from backend.config import STREAM_BOUNDARY, STREAM_TIMEOUT, CONFIDENCE_THRESHOLD
+from backend.config import STREAM_BOUNDARY, STREAM_TIMEOUT
 from backend.models import ProcessFrameRequest
 from backend.services import frame_distributor, job_tracker
 
 router = APIRouter(tags=["Stream"])
 
-# Colour palette for drawing bounding boxes
-_BOX_COLOURS = [
-    (0, 255, 0), (255, 0, 0), (0, 165, 255), (255, 255, 0),
-    (0, 255, 255), (255, 0, 255), (128, 255, 0), (0, 128, 255),
-]
-
 # Dedicated thread pool — one thread per CPU core keeps multiple uploads running in parallel
 _executor = ThreadPoolExecutor(max_workers=max(2, (os.cpu_count() or 2)), thread_name_prefix="yolo")
-
-# Module-level YOLO model — loaded once, reused across uploads
-_yolo_model: Optional[object] = None
-
-
-def _get_model():
-    """Lazy-load YOLOv8n; downloads ~6 MB weights on first call."""
-    global _yolo_model
-    if _yolo_model is None:
-        from ultralytics import YOLO  # type: ignore
-        _yolo_model = YOLO("yolov8n.pt")
-    return _yolo_model
 
 
 @router.post(
@@ -48,84 +29,22 @@ def _get_model():
 )
 def coordinator_process_frame(req: ProcessFrameRequest):
     """
-    Allows the coordinator to act as a worker in its own distributed pool.
-    FrameQueue dispatches frames here when 'coordinator-local' is least-loaded.
-    Applies the configured CONFIDENCE_THRESHOLD before storing results.
+    Kept for backward compatibility (remote workers still POST results here).
+    Internally delegates to the shared InferenceService — same model, zero duplication.
     """
     import base64
-    import cv2  # type: ignore
-    import numpy as np  # type: ignore
-    from backend.models import Detection, BoundingBox, FrameResult
-    from backend.services import result_aggregator, frame_queue
-    from datetime import datetime, timezone
-    from fastapi import HTTPException
+    from backend.services import result_aggregator, frame_queue, inference_service
 
     try:
         jpeg_bytes = base64.b64decode(req.jpeg_b64)
     except Exception as exc:
         raise HTTPException(status_code=400, detail=f"Invalid base64: {exc}")
 
-    nparr = np.frombuffer(jpeg_bytes, np.uint8)
-    frame = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-    if frame is None:
-        raise HTTPException(status_code=400, detail="Could not decode JPEG frame.")
-
-    model = _get_model()
-    t0 = time.perf_counter()
-    results = model(frame, verbose=False)
-    elapsed_ms = (time.perf_counter() - t0) * 1000
-
-    detections: list[Detection] = []
-    counts: dict[str, int] = {}
-    for r in results:
-        boxes = r.boxes
-        if boxes is None:
-            continue
-        for box in boxes:
-            conf = float(box.conf[0])
-            if conf < CONFIDENCE_THRESHOLD:        # edge autonomy: local filter
-                continue
-            label = model.names[int(box.cls[0])]
-            x1, y1, x2, y2 = box.xyxy[0].tolist()
-            detections.append(Detection(
-                label=label,
-                confidence=round(conf, 3),
-                box=BoundingBox(x1=int(x1), y1=int(y1), x2=int(x2), y2=int(y2)),
-            ))
-            counts[label] = counts.get(label, 0) + 1
-
-    stored = FrameResult(
-        frame_id=req.frame_id,
-        worker_id="coordinator-local",
-        detections=detections,
-        object_counts=counts,
-        processing_time_ms=round(elapsed_ms, 2),
-        received_at=datetime.now(timezone.utc),
-    )
-    result_aggregator.store_frame_result(req.frame_id, stored, "coordinator-local")
+    result = inference_service.run(jpeg_bytes, req.frame_id)
+    result_aggregator.store_frame_result(req.frame_id, result, "coordinator-local")
     frame_queue.acknowledge(req.task_id)
 
-    # ── Push annotated frame to the MJPEG live stream ─────────────────────
-    _push_annotated_frame(frame, detections)
-
-    return {"status": "ok", "task_id": req.task_id, "detections": len(detections)}
-
-
-def _push_annotated_frame(frame, detections) -> None:
-    """Draw bounding boxes + labels on the frame and push to MJPEG stream."""
-    import cv2
-    for i, det in enumerate(detections):
-        colour = _BOX_COLOURS[i % len(_BOX_COLOURS)]
-        b = det.box
-        cv2.rectangle(frame, (b.x1, b.y1), (b.x2, b.y2), colour, 2)
-        label_text = f"{det.label} {det.confidence:.0%}"
-        (tw, th), _ = cv2.getTextSize(label_text, cv2.FONT_HERSHEY_SIMPLEX, 0.5, 1)
-        cv2.rectangle(frame, (b.x1, b.y1 - th - 6), (b.x1 + tw + 4, b.y1), colour, -1)
-        cv2.putText(frame, label_text, (b.x1 + 2, b.y1 - 4),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 0), 1)
-    ok, jpeg_buf = cv2.imencode(".jpg", frame)
-    if ok:
-        frame_distributor.push(jpeg_buf.tobytes())
+    return {"status": "ok", "task_id": req.task_id, "detections": len(result.detections)}
 
 
 @router.get(
